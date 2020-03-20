@@ -1,0 +1,45 @@
+{
+  "name": "@parkingboss/svelte-utils",
+  "version": "0.0.0",
+  "description": "Svelte utilities for Parking Boss Apps",
+  "main": "cjs/index.js",
+  "module": "es6/index.js",
+  "scripts": {
+    "clean:esm": "rm -rf esm",
+    "clean:cjs": "rm -rf cjs",
+    "clean": "run-p clean:*",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build": "run-p build:*",
+    "dev:esm": "tsc -w",
+    "dev:cjs": "tsc -w --project tsconfig.cjs.json",
+    "dev": "run-p dev:*",
+    "prepare": "run-s clean build",
+    "preversion": "npm run test",
+    "postversion": "git push && git push --tags && npm publish --access=public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/parkingboss/parkingboss-svelte-utils.git"
+  },
+  "keywords": [
+    "Svelte",
+    "Parking Boss",
+    "Utilities"
+  ],
+  "author": "Parking Boss",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/parkingboss/parkingboss-svelte-utils/issues"
+  },
+  "homepage": "https://github.com/parkingboss/parkingboss-svelte-utils#readme",
+  "devDependencies": {
+    "npm-run-all": "^4",
+    "typescript": "^3"
+  },
+  "dependencies": {
+    "@parkingboss/api": "^0.7",
+    "@parkingboss/utils": "^0.9",
+    "svelte": "^3"
+  }
+}
