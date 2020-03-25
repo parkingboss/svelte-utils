@@ -1,11 +1,13 @@
 {
   "name": "@parkingboss/svelte-utils",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Svelte utilities for Parking Boss Apps",
   "main": "cjs/index.js",
   "module": "es6/index.js",
   "files": [
-    "cjs", "es6", "src"
+    "cjs",
+    "es6",
+    "src"
   ],
   "scripts": {
     "clean:esm": "rm -rf esm",
