@@ -38,8 +38,11 @@
     "typescript": "^3"
   },
   "dependencies": {
-    "@parkingboss/api": "^0.7",
-    "@parkingboss/utils": "^0.9",
+    "@parkingboss/api": "^0.7.4",
+    "@parkingboss/utils": "^0.10.0",
+    "@turf/boolean-point-in-polygon": "^6.0.1",
+    "@turf/buffer": "^5.1.5",
+    "@turf/distance": "^6.0.1",
     "svelte": "^3"
   }
 }
