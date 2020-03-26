@@ -14,6 +14,7 @@ export function geoLocation(api: Api) {
 
   async function checkPosition(pos: Position): Promise<undefined | PropertiesPayload> {
     checking = true;
+    lastChecked = pos;
     normalize = !api.settings.skipNormalization;
     try {
       return await api.property(coords(pos).join(','), {}) as PropertiesPayload;
