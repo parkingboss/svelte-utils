@@ -1,6 +1,6 @@
 {
   "name": "@parkingboss/svelte-utils",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Svelte utilities for Parking Boss Apps",
   "main": "cjs/index.js",
   "module": "es6/index.js",
