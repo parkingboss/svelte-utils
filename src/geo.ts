@@ -7,7 +7,7 @@ export const UNSUPPORTED = 'unsupported';
 export const REQUESTING = 'requesting';
 export const UNPERMITTED = 'unpermitted';
 export const LOADING = 'loading';
-export const ERROR = 'gps-error';
+export const ERROR = 'error';
 export const ACTIVE = 'active';
 
 export type Status = typeof UNSTARTED | typeof UNSUPPORTED | typeof REQUESTING | typeof UNPERMITTED | typeof LOADING | typeof ERROR | typeof ACTIVE;
