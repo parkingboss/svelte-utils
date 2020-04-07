@@ -5,3 +5,4 @@ export * from './geoLocation';
 export * from './online';
 export * from './readonly';
 export * from './arrayStore';
+export * from './data';
