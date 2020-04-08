@@ -55,4 +55,6 @@ export function updateItems(result: Payload) {
 
     return $items;
   });
+
+  return result;
 }
