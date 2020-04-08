@@ -5,6 +5,7 @@ import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import buffer from '@turf/buffer';
 import { geo } from './geo';
 import { derived } from 'svelte/store';
+import { updateItems } from './data';
 
 export function geoLocation(api: Api) {
   let lastChecked: Position | null = null;
@@ -17,7 +18,7 @@ export function geoLocation(api: Api) {
     lastChecked = pos;
     normalize = !api.settings.skipNormalization;
     try {
-      return await api.geoProperties(coords(pos), {}) as PropertiesPayload;
+      return await api.geoProperties(coords(pos), {}).then(updateItems);
     } catch (err) {
       console.warn("Failed to fetch property for current location.");
     } finally {
