@@ -18,7 +18,7 @@ export function geoLocation(api: Api) {
     lastChecked = pos;
     normalize = !api.settings.skipNormalization;
     try {
-      return await api.geoProperties(coords(pos), {}).then(updateItems);
+      return await api.geoProperties(coords(pos), {}).then(p => updateItems(p));
     } catch (err) {
       console.warn("Failed to fetch property for current location.");
     } finally {
