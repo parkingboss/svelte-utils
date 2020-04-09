@@ -7,20 +7,27 @@ export const attachments = writable<Attachments>({});
 function newer(curr: any, incoming: any) {
   if (!curr) return incoming;
 
-  if (curr.updated && incoming.updated) return curr.updated > incoming.updated ? curr : incoming;
   if (curr.generated && incoming.generated) return curr.generated > incoming.generated ? curr : incoming;
 
   return incoming;
 }
 
-export function updateItems<T extends Payload>(result: T): T {
+export function updateItems<T extends Payload>(payload: T): T;
+export function updateItems<T extends Payload>(...payloads: T[]): T[];
+export function updateItems<T extends Payload>(...payloads: T[]) {
+  const allAttachments = payloads.filter(x => x.attachments).map(p => p.attachments as Attachments);
+  const allItems = payloads.map(p => p.items);
+
+  const newAttachments = Object.assign({}, ...allAttachments) as Attachments;
+  const newItems = Object.assign({}, ...allItems) as Items;
+
   items.update($items => {
-    if (result.attachments) {
+    if (newAttachments) {
       attachments.update($attachments => {
-        Object.entries(result.attachments!)
+        Object.entries(newAttachments!)
           .forEach(([key, incomingAttachments]) => {
             const currItem = $items[key];
-            const incomingItem = result.items[key];
+            const incomingItem = newItems[key];
             const newerItem = newer(currItem, incomingItem);
 
             $attachments[key] = newerItem === currItem ? $attachments[key] : incomingAttachments;
@@ -30,12 +37,14 @@ export function updateItems<T extends Payload>(result: T): T {
       });
     }
 
-    Object.entries(result.items).forEach(([key, newItem]) => {
+    Object.entries(newItems).forEach(([key, newItem]) => {
       $items[key] = newer($items[key], newItem);
     });
 
     return $items;
   });
 
-  return result;
+  return payloads.length == 1
+    ? payloads[0]
+    : payloads;
 }
