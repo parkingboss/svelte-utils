@@ -1,4 +1,4 @@
-import { Api, PropertiesPayload } from '@parkingboss/api';
+import { Api, Payload, PropertiesPayload } from '@parkingboss/api';
 import { Polygon } from '@turf/helpers/lib/geojson';
 import distance from '@turf/distance';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';

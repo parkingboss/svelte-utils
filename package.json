@@ -43,8 +43,8 @@
     "typescript": "^3"
   },
   "dependencies": {
-    "@parkingboss/api": "^0.15.1",
-    "@parkingboss/utils": "^0.12.0",
+    "@parkingboss/api": "^0.18.0",
+    "@parkingboss/utils": "^0.14.0",
     "@turf/boolean-point-in-polygon": "^6.0.1",
     "@turf/buffer": "^5.1.5",
     "@turf/distance": "^6.0.1",
