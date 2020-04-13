@@ -36,13 +36,12 @@ export function geoLocation(api: Api) {
   }
 
   function areas(properties: any): Polygon[] {
-    if (normalize) {
-      return Object.values(properties.locations.items)
-        .map((p: any) => p.address.area as Polygon);
-    } else {
-      return Object.keys(properties.addresses.items)
-        .map(key => properties.items[key].area as Polygon);
-    }
+
+    return Object.values(properties.properties.items)
+    .map((p: any) => properties.items[p] || p)
+    .map((p: any) => properties.items[p.address] || p.address)
+    .map((a: any) => a.area as Polygon);
+
   }
 
   function outOfBounds(current: Position, property: PropertiesPayload): boolean {
