@@ -1,8 +1,8 @@
-import { Items, Attachments, Payload } from '@parkingboss/api';
+import { Items, Payload, Entity, Attachment, AttachmentItems, EntityItems } from '@parkingboss/api';
 import { writable } from 'svelte/store';
 
-export const items = writable<Items>({});
-export const attachments = writable<Attachments>({});
+export const items = writable<Items<Entity>>({});
+export const attachments = writable<Items<Attachment>>({});
 
 function newer(curr: any, incoming: any) {
   if (!curr) return incoming;
@@ -12,33 +12,46 @@ function newer(curr: any, incoming: any) {
   return incoming;
 }
 
+function updateAttachments(currentItems: EntityItems, newItems: EntityItems, newAttachments: AttachmentItems): void {
+  if (Object.keys(newAttachments).length > 0) attachments.update(currentAttachments => {
+    Object.entries(newAttachments).forEach(([itemId, newItemAttachments]) => {
+
+      // which item is newer?
+      const currItem = currentItems[itemId];
+      const newItem = newItems[itemId];
+      const newerItem = newer(currItem, newItems[itemId]) as Entity;
+
+      // update attachments if incoming item is newer
+      if (newerItem === newItem) {
+        currentAttachments[itemId] = newItemAttachments;
+      }
+    });
+
+    // return mutated currentAttachments object
+    return currentAttachments;
+  })
+}
+
 export function updateItems<T extends Payload>(payload: T): T;
 export function updateItems<T extends Payload>(...payloads: T[]): T[];
 export function updateItems<T extends Payload>(...payloads: T[]) {
-  const allAttachments = payloads.filter(x => x.attachments).map(p => p.attachments as Attachments);
-  const allItems = payloads.map(p => p.items);
 
-  const newAttachments = Object.assign({}, ...allAttachments) as Attachments;
-  const newItems = Object.assign({}, ...allItems) as Items;
+  // bundle up attachments adn items
+  const allAttachments = payloads
+    .filter(x => x.attachments)
+    .map(p => p.attachments!.items || {} as AttachmentItems);
+  const allItems = payloads.map(p => p.items as EntityItems);
+
+  // unpack into combined items
+  const newAttachments = Object.assign({}, ...allAttachments) as AttachmentItems;
+  const newItems = Object.assign({}, ...allItems) as EntityItems;
 
   items.update($items => {
-    if (newAttachments) {
-      attachments.update($attachments => {
-        Object.entries(newAttachments!)
-          .forEach(([key, incomingAttachments]) => {
-            const currItem = $items[key];
-            const incomingItem = newItems[key];
-            const newerItem = newer(currItem, incomingItem);
 
-            $attachments[key] = newerItem === currItem ? $attachments[key] : incomingAttachments;
-          });
+    updateAttachments($items, newItems, newAttachments);
 
-        return $attachments;
-      });
-    }
-
-    Object.entries(newItems).forEach(([key, newItem]) => {
-      $items[key] = newer($items[key], newItem);
+    Object.entries(newItems).forEach(([itemId, newItem]) => {
+      $items[itemId] = newer($items[itemId], newItem);
     });
 
     return $items;
