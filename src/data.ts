@@ -32,9 +32,9 @@ function updateAttachments(currentItems: EntityItems, newItems: EntityItems, new
   })
 }
 
-export function updateItems<T extends Payload>(payload: T): T;
-export function updateItems<T extends Payload>(...payloads: T[]): T[];
-export function updateItems<T extends Payload>(...payloads: T[]) {
+export function updateItems<T extends Payload>(payload: Partial<T>): T;
+export function updateItems<T extends Payload>(...payloads: Partial<T>[]): T[];
+export function updateItems<T extends Payload>(...payloads: Partial<T>[]) {
 
   // bundle up attachments adn items
   const allAttachments = payloads
